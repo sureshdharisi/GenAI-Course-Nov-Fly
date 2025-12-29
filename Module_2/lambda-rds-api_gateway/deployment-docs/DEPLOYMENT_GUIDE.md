@@ -53,11 +53,22 @@ Create three ECR repositories for Docker images:
 # Set variables
 export AWS_REGION="us-east-1"
 export AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
-
+# Set variables (Windows)
+set AWS_REGION="us-east-1"
+## Get the account id in windows. 
+1. aws sts get-caller-identity --query Account --output text > temp_account_id.txt
+2. SET /P AWS_ACCOUNT_ID=<temp_account_id.txt
+3. echo %AWS_ACCOUNT_ID%
+4. DEL temp_account_id.txt
 # Create repositories
 aws ecr create-repository --repository-name generic-query-executor --region $AWS_REGION
 aws ecr create-repository --repository-name customers-api --region $AWS_REGION
 aws ecr create-repository --repository-name orders-api --region $AWS_REGION
+
+# Create repositories (Windows)
+aws ecr create-repository --repository-name generic-query-executor --region %AWS_REGION%
+aws ecr create-repository --repository-name customers-api --region %AWS_REGION%
+aws ecr create-repository --repository-name orders-api --region %AWS_REGION%
 ```
 
 **Output**: Note the `repositoryUri` for each repository.
